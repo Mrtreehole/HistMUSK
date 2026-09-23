@@ -1,0 +1,46 @@
+model:
+  type: histmusk
+  expected_qwen_dim: 128
+  hidden_dim: 256
+  num_cell_prototypes: 4
+  num_heads: 8
+  dropout: 0.10
+  cell_dropout: 0.05
+  text_dropout: 0.05
+  enable_cell: true
+  enable_text: true
+  use_cell_gate: true
+  use_text_gate: false
+  gate_max: 0.5
+  cell_pooling: prototype
+  cell_fusion: gated_add
+  text_fusion: concat
+
+target:
+  mode: train_gene_zscore
+  h5ad_path: expression.h5ad
+
+loss:
+  profile: reduced_aux_consistency
+  spot_pcc_weight: 0.10
+  gene_pcc_weight: 0.10
+  spot_aux_weight: 0.05
+  spot_aux_pcc_weight: 0.20
+  residual_weight: 0.0
+  consistency_weight: 0.005
+
+training:
+  device: auto
+  mixed_precision: auto
+  stage: full
+  seed: 42
+  batch_size: 64
+  max_epochs: 200
+  optimizer: AdamW
+  learning_rate: 0.00003
+  weight_decay: 0.0001
+  gradient_clip_norm: 1.0
+  early_stopping_patience: 1000
+  max_amp_overflow_steps_per_epoch: 20
+  num_workers: 8
+  scheduler: none
